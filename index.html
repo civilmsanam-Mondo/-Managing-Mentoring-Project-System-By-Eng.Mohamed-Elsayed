@@ -1036,7 +1036,7 @@ body.dark .boq-total-row{background:#0a1520!important}
   <div class="sb-sep" id="admin-sep" style="display: block;"><span data-ar="الإدارة" data-en="Administration">الإدارة</span></div>
   <div class="nl" onclick="showSec(&#39;permits&#39;,this)"><i class="fas fa-id-badge" style="color:#b0bec5"></i><span data-ar="التصاريح والأذونات" data-en="Permits &amp; Permissions">التصاريح والأذونات</span></div>
   <div class="nl" onclick="showSec(&#39;doclog&#39;,this)"><i class="fas fa-archive" style="color:#ffab91"></i><span data-ar="سجل المستندات" data-en="Document Log">سجل المستندات</span></div>
-  <div class="nl" id="nav-users" onclick="showSec(&#39;users&#39;,this)" style="display: flex;"><i class="fas fa-user-shield" style="color:#b39ddb"></i><span data-ar="إدارة المستخدمين" data-en="User Management">إدارة المستخدمين</span></div>
+  <div class="nl" id="nav-users" onclick="showSec(&#39;users&#39;,this)" style="display: none;"><i class="fas fa-user-shield" style="color:#b39ddb"></i><span data-ar="إدارة المستخدمين" data-en="User Management">إدارة المستخدمين</span></div>
   <div class="sb-footer">
     <div class="sb-date"><i class="fas fa-calendar"></i> <span id="sb-date">الأحد، ٣١ مايو ٢٠٢٦</span></div>
     <div style="text-align:center;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.1)">
@@ -2290,19 +2290,48 @@ ALTER TABLE site_data DISABLE ROW LEVEL SECURITY;</code>
         <div class="form-col"><label>الصلاحية</label><select id="nu-role"><option value="editor">محرر — إضافة وتعديل</option><option value="viewer">مشاهد — قراءة فقط</option><option value="admin">مسؤول — صلاحيات كاملة</option></select></div>
         <div class="form-col"><label>الوظيفة / المسمى</label><input type="text" id="nu-title" placeholder="مهندس موقع"></div>
       </div>
-    </div>
-      <div class="form-row"><div class="form-col"><label>الأقسام المسموح بالتعديل فيها</label>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;font-size:12px;margin-top:4px" id="nu-sections">
+      <!-- التبويبات المرئية -->
+      <div class="form-row"><div class="form-col">
+        <label style="font-weight:700;color:#1a3a5c">👁 التبويبات المرئية للمستخدم</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:12px;margin-top:6px;background:#f0f4ff;border-radius:7px;padding:8px" id="nu-vis-sections">
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="dashboard" checked> لوحة التحكم</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="works" checked> أعمال الموقع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="daily" checked> التقرير اليومي</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="approvals" checked> اعتمادات المواد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="warehouse" checked> المستودع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="labor" checked> العمالة والمعدات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="analysis"> التحليل الشامل</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="contract"> بيانات العقد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="schedule"> الجدول الزمني</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="boq"> BOQ</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="delays"> التأخيرات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="ipc"> المستخلصات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="permits"> التصاريح</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-vis-cb" value="doclog"> سجل المستندات</label>
+        </div>
+        <small style="color:#888;font-size:11px">فارغة = جميع التبويبات مرئية</small>
+      </div></div>
+      <!-- التبويبات القابلة للتعديل (للمحررين فقط) -->
+      <div class="form-row"><div class="form-col">
+        <label style="font-weight:700;color:#1a3a5c">✏️ التبويبات القابلة للتعديل (للمحررين فقط)</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:12px;margin-top:6px;background:#fff8e8;border-radius:7px;padding:8px" id="nu-sections">
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="works"> أعمال الموقع</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="daily"> التقرير اليومي</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="approvals"> اعتمادات المواد</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="warehouse"> المستودع</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="labor"> العمالة والمعدات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="analysis"> التحليل الشامل</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="contract"> بيانات العقد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="schedule"> الجدول الزمني</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="boq"> BOQ</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="delays"> التأخيرات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="ipc"> المستخلصات</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="permits"> التصاريح</label>
           <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="nu-sec-cb" value="doclog"> سجل المستندات</label>
         </div>
         <small style="color:#888;font-size:11px">فارغة = جميع الأقسام | المشاهدون لا يعدلون بأي حال</small>
       </div></div>
+    </div>
     <div class="mfooter">
       <button class="pbtn pbtn-blue" onclick="addUser()"><i class="fas fa-user-plus"></i> إضافة</button>
       <button class="tbtn tbtn-outline" onclick="closeM(&#39;m-adduser&#39;)">إلغاء</button>
@@ -2310,11 +2339,89 @@ ALTER TABLE site_data DISABLE ROW LEVEL SECURITY;</code>
   </div>
 </div>
 
+<!-- ══ EDIT USER PERMISSIONS MODAL ══ -->
+<div class="modal-bg" id="m-editperms">
+  <div class="modal-box sm">
+    <div class="mhead"><h4><i class="fas fa-user-cog" style="color:#2d6a9f"></i> تعديل صلاحيات المستخدم</h4><button class="mclose" onclick="closeM('m-editperms')">✕</button></div>
+    <div class="mbody">
+      <input type="hidden" id="ep-idx">
+      <div style="background:#f5f7fb;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;font-weight:700;color:#1a3a5c" id="ep-user-info">—</div>
+      <div class="form-row">
+        <div class="form-col">
+          <label>الصلاحية</label>
+          <select id="ep-role" style="width:100%;padding:8px;border:1px solid #d0dce8;border-radius:7px;font-size:13px">
+            <option value="editor">محرر — إضافة وتعديل</option>
+            <option value="viewer">مشاهد — قراءة فقط</option>
+            <option value="admin">مسؤول — صلاحيات كاملة</option>
+          </select>
+        </div>
+      </div>
+      <!-- التبويبات المرئية -->
+      <div class="form-row"><div class="form-col">
+        <label style="font-weight:700;color:#1a3a5c;display:flex;align-items:center;justify-content:space-between">
+          <span>👁 التبويبات المرئية</span>
+          <span style="display:flex;gap:6px">
+            <button type="button" onclick="epCheckAll('vis',true)" style="font-size:11px;padding:2px 8px;border:1px solid #2d6a9f;border-radius:4px;background:#2d6a9f;color:#fff;cursor:pointer">الكل</button>
+            <button type="button" onclick="epCheckAll('vis',false)" style="font-size:11px;padding:2px 8px;border:1px solid #aaa;border-radius:4px;background:#fff;cursor:pointer">لا شيء</button>
+          </span>
+        </label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:12px;margin-top:6px;background:#f0f4ff;border-radius:7px;padding:8px" id="ep-vis-grid">
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="dashboard"> لوحة التحكم</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="works"> أعمال الموقع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="daily"> التقرير اليومي</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="approvals"> اعتمادات المواد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="warehouse"> المستودع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="labor"> العمالة والمعدات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="analysis"> التحليل الشامل</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="contract"> بيانات العقد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="schedule"> الجدول الزمني</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="boq"> BOQ</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="delays"> التأخيرات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="ipc"> المستخلصات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="permits"> التصاريح</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-vis-cb" value="doclog"> سجل المستندات</label>
+        </div>
+        <small style="color:#888;font-size:11px">فارغة = جميع التبويبات مرئية</small>
+      </div></div>
+      <!-- التبويبات القابلة للتعديل -->
+      <div class="form-row"><div class="form-col">
+        <label style="font-weight:700;color:#1a3a5c;display:flex;align-items:center;justify-content:space-between">
+          <span>✏️ التبويبات القابلة للتعديل</span>
+          <span style="display:flex;gap:6px">
+            <button type="button" onclick="epCheckAll('sec',true)" style="font-size:11px;padding:2px 8px;border:1px solid #28a745;border-radius:4px;background:#28a745;color:#fff;cursor:pointer">الكل</button>
+            <button type="button" onclick="epCheckAll('sec',false)" style="font-size:11px;padding:2px 8px;border:1px solid #aaa;border-radius:4px;background:#fff;cursor:pointer">لا شيء</button>
+          </span>
+        </label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:12px;margin-top:6px;background:#fff8e8;border-radius:7px;padding:8px" id="ep-sec-grid">
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="works"> أعمال الموقع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="daily"> التقرير اليومي</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="approvals"> اعتمادات المواد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="warehouse"> المستودع</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="labor"> العمالة والمعدات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="analysis"> التحليل الشامل</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="contract"> بيانات العقد</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="schedule"> الجدول الزمني</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="boq"> BOQ</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="delays"> التأخيرات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="ipc"> المستخلصات</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="permits"> التصاريح</label>
+          <label style="display:flex;align-items:center;gap:4px"><input type="checkbox" class="ep-sec-cb" value="doclog"> سجل المستندات</label>
+        </div>
+        <small style="color:#888;font-size:11px">فارغة = جميع الأقسام مسموح تعديلها | المشاهدون لا يعدلون</small>
+      </div></div>
+    </div>
+    <div class="mfooter">
+      <button class="pbtn pbtn-blue" onclick="saveUserPerms()"><i class="fas fa-save"></i> حفظ الصلاحيات</button>
+      <button class="tbtn tbtn-outline" onclick="closeM('m-editperms')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ===== STATE =====
 var DB = {ipcs:[],works:[],daily:[],approvals:[],whItems:[],whMovs:[],labor:[],equip:[],employees:[],machines:[],permits:[],docLog:{prq:[],mst:[],mat:[],itp:[],dwg:[],mir:[],wir:[],rfi:[],ncr:[],lettersIn:[],lettersOut:[]},driveFolders:{}};
-var _sbUrl  = localStorage.getItem('sb_url')||'';   // Supabase Project URL
-var _sbKey  = localStorage.getItem('sb_key')||'';   // Supabase anon key
+var _sbUrl  = localStorage.getItem('sb_url')||'https://mnkohrmwcxugnzxkwuac.supabase.co';   // Supabase Project URL
+var _sbKey  = localStorage.getItem('sb_key')||'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ua29ocm13Y3h1Z256eGt3dWFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTY2OTQ5OCwiZXhwIjoyMDk1MjQ1NDk4fQ.cX-91z3mDmF7yCyoyKVnm8sTNc10PguRBG1leRKJFlE';   // Supabase anon key
 var _fbTimer = null;
 var CU = null; // current user
 var CH = {}; // charts
@@ -2782,6 +2889,17 @@ function renderAll() {
 
 function canEdit(sec){if(!CU)return false;if(CU.role==='admin'||CU.username==='admin')return true;if(CU.role!=='editor')return false;if(!sec)return true;if(!CU.sections||!CU.sections.length)return true;return CU.sections.indexOf(sec)>=0;}
 function isAdmin() { return CU && CU.role === 'admin'; }
+function canView(sec){if(!CU)return false;if(CU.role==='admin'||CU.username==='admin')return true;if(!CU.visibleSections||!CU.visibleSections.length)return true;return CU.visibleSections.indexOf(sec)>=0;}
+
+function applySidebarVisibility() {
+  if (isAdmin()) return;
+  var navItems = document.querySelectorAll('#sidebar .nl[onclick]');
+  navItems.forEach(function(el) {
+    var m = (el.getAttribute('onclick')||'').match(/showSec\('([^']+)'/);
+    if (!m) return;
+    el.style.display = canView(m[1]) ? 'flex' : 'none';
+  });
+}
 
 function setPerms() {
   var editIds = ['btn-add-work','btn-add-daily','btn-add-ap','btn-add-item','btn-add-mov','btn-add-labor'];
@@ -2791,6 +2909,7 @@ function setPerms() {
   }
   var xlBtn = document.getElementById('xl-works-btn');
   if (xlBtn) xlBtn.style.display = canEdit() ? 'inline-flex' : 'none';
+  applySidebarVisibility();
 }
 
 // ===== DATA =====
@@ -4061,13 +4180,16 @@ function addUser() {
   var users = getUsers();
   for (var i = 0; i < users.length; i++) { if (users[i].username === uname) { alert('اسم المستخدم مستخدم بالفعل'); return; } }
   var secs=[];document.querySelectorAll('.nu-sec-cb:checked').forEach(function(cb){secs.push(cb.value);});
-  users.push({username:uname,password:pass,name:name,role:role,title:title,active:true,created:getTodayStr(),sections:secs});
+  var visSecs=[];document.querySelectorAll('.nu-vis-cb:checked').forEach(function(cb){visSecs.push(cb.value);});
+  users.push({username:uname,password:pass,name:name,role:role,title:title,active:true,created:getTodayStr(),sections:secs,visibleSections:visSecs});
   saveUsers(users);
   closeM('m-adduser');
   clearFields(['nu-name','nu-user','nu-pass','nu-title']);
   renderUsers();
   alert('تم إضافة المستخدم: ' + name);
 }
+
+var SEC_LABELS = {dashboard:'لوحة التحكم',works:'أعمال الموقع',daily:'التقرير اليومي',approvals:'اعتمادات المواد',warehouse:'المستودع',labor:'العمالة والمعدات',analysis:'التحليل الشامل',contract:'بيانات العقد',schedule:'الجدول الزمني',boq:'BOQ',delays:'التأخيرات',ipc:'المستخلصات',permits:'التصاريح',doclog:'سجل المستندات'};
 
 function renderUsers() {
   var c = document.getElementById('users-container');
@@ -4082,16 +4204,39 @@ function renderUsers() {
   } else {
     for (var i = 0; i < users.length; i++) {
       var u = users[i];
-      html += '<div class="ucard">';
+      // Build visible sections chips
+      var visChips = '';
+      if (u.visibleSections && u.visibleSections.length) {
+        visChips = '<div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:3px">';
+        visChips += '<span style="font-size:10px;color:#555;font-weight:600">👁</span>';
+        u.visibleSections.forEach(function(s){ visChips += '<span style="font-size:10px;background:#e8f0fe;color:#1a3a5c;padding:1px 6px;border-radius:10px">' + (SEC_LABELS[s]||s) + '</span>'; });
+        visChips += '</div>';
+      } else {
+        visChips = '<div style="margin-top:4px;font-size:10px;color:#aaa">👁 جميع التبويبات</div>';
+      }
+      var secChips = '';
+      if (u.role === 'editor') {
+        if (u.sections && u.sections.length) {
+          secChips = '<div style="margin-top:3px;display:flex;flex-wrap:wrap;gap:3px">';
+          secChips += '<span style="font-size:10px;color:#f0a500;font-weight:600">✏️</span>';
+          u.sections.forEach(function(s){ secChips += '<span style="font-size:10px;background:#fff8e8;color:#7a5000;padding:1px 6px;border-radius:10px">' + (SEC_LABELS[s]||s) + '</span>'; });
+          secChips += '</div>';
+        } else {
+          secChips = '<div style="margin-top:2px;font-size:10px;color:#aaa">✏️ تعديل الكل</div>';
+        }
+      }
+      html += '<div class="ucard" style="flex-direction:column;align-items:stretch">';
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">';
       html += '<div class="uinfo"><div class="uavatar">' + u.name.charAt(0) + '</div>';
-      html += '<div><strong>' + esc(u.name) + '</strong><div style="font-size:12px;color:#888">' + esc(u.username) + ' · ' + (u.title||'—') + '</div></div></div>';
+      html += '<div><strong>' + esc(u.name) + '</strong><div style="font-size:12px;color:#888">' + esc(u.username) + ' · ' + (u.title||'—') + '</div>' + visChips + secChips + '</div></div>';
       html += '<div class="uactions">';
       html += '<span class="rbadge rb-' + u.role + '">' + (rl[u.role]||u.role) + '</span>';
       html += u.active ? '<span class="badge b-green">نشط</span>' : '<span class="badge b-red">معلق</span>';
       html += '<button class="tbtn ' + (u.active?'tbtn-outline':'tbtn-green') + '" style="font-size:11px;padding:3px 8px" onclick="toggleUser(' + i + ')">' + (u.active?'تعليق':'تفعيل') + '</button>';
-      html += '<button class="tbtn tbtn-outline" style="font-size:11px;padding:3px 8px" onclick="changeRole(' + i + ')"><i class="fas fa-edit"></i> صلاحية</button>';
+      html += '<button class="tbtn tbtn-outline" style="font-size:11px;padding:3px 8px;background:#1a3a5c;color:#fff" onclick="openEditPerms(' + i + ')"><i class="fas fa-sliders-h"></i> صلاحيات</button>';
       html += '<button class="tbtn tbtn-red" style="font-size:11px;padding:3px 8px" onclick="deleteUser(' + i + ')"><i class="fas fa-trash"></i></button>';
       html += '</div></div>';
+      html += '</div>';
     }
   }
   c.innerHTML = html;
@@ -4105,15 +4250,44 @@ function deleteUser(i) {
   if (!isAdmin()||!confirm('حذف هذا المستخدم نهائياً؟')) return;
   var u = getUsers(); u.splice(i,1); saveUsers(u); renderUsers();
 }
-function changeRole(i) {
+function openEditPerms(i) {
   if (!isAdmin()) return;
+  var u = getUsers()[i];
+  document.getElementById('ep-idx').value = i;
+  document.getElementById('ep-user-info').textContent = u.name + ' (' + u.username + ')';
+  document.getElementById('ep-role').value = u.role;
+  // Set visible sections checkboxes
+  var visSecs = u.visibleSections || [];
+  document.querySelectorAll('.ep-vis-cb').forEach(function(cb) {
+    cb.checked = !visSecs.length || visSecs.indexOf(cb.value) >= 0;
+  });
+  // Set edit sections checkboxes
+  var secs = u.sections || [];
+  document.querySelectorAll('.ep-sec-cb').forEach(function(cb) {
+    cb.checked = secs.indexOf(cb.value) >= 0;
+  });
+  openM('m-editperms');
+}
+function saveUserPerms() {
+  if (!isAdmin()) return;
+  var i = parseInt(document.getElementById('ep-idx').value);
   var u = getUsers();
-  var cur = u[i].role;
-  var choice = prompt('صلاحية ' + u[i].name + ':\n\n1 = مسؤول (كامل)\n2 = محرر (إضافة/تعديل)\n3 = مشاهد (قراءة فقط)\n\nأدخل الرقم:', cur==='admin'?1:cur==='editor'?2:3);
-  if (!choice) return;
-  var roles = {1:'admin',2:'editor',3:'viewer'};
-  if (roles[parseInt(choice)]) { u[i].role = roles[parseInt(choice)]; saveUsers(u); renderUsers(); }
-  else alert('رقم غير صحيح');
+  u[i].role = document.getElementById('ep-role').value;
+  var visSecs = [];
+  document.querySelectorAll('.ep-vis-cb:checked').forEach(function(cb){ visSecs.push(cb.value); });
+  // If all checked, store empty (means all visible)
+  var allVisCbs = document.querySelectorAll('.ep-vis-cb');
+  u[i].visibleSections = (visSecs.length === allVisCbs.length) ? [] : visSecs;
+  var secs = [];
+  document.querySelectorAll('.ep-sec-cb:checked').forEach(function(cb){ secs.push(cb.value); });
+  u[i].sections = secs;
+  saveUsers(u);
+  closeM('m-editperms');
+  renderUsers();
+}
+function epCheckAll(type, val) {
+  var cls = type === 'vis' ? '.ep-vis-cb' : '.ep-sec-cb';
+  document.querySelectorAll(cls).forEach(function(cb){ cb.checked = val; });
 }
 
 // ===== CHARTS =====
