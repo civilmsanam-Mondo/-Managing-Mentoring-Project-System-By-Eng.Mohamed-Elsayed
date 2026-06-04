@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0154)file:///C:/Users/Moahmed%20Elsayed/Desktop/Planning%20Project/%D8%AA%D8%AE%D8%B7%D9%8A%D8%B7%20%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%8A%D8%B9/index.html -->
+
 <html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -963,6 +963,8 @@ body.dark .boq-total-row{background:#0a1520!important}
 <div id="app" style="display: none;">
 
 <!-- SIDEBAR -->
+
+<div id="js-indicator" style="display:none;position:fixed;bottom:10px;left:10px;background:#27ae60;color:#fff;padding:5px 10px;border-radius:5px;font-size:12px;z-index:99999">JS Active</div>
 <div id="sb-overlay" onclick="closeSidebar()"></div>
 <div id="sidebar">
   <div class="sb-logo">
@@ -1032,7 +1034,7 @@ body.dark .boq-total-row{background:#0a1520!important}
   <div class="nl" onclick="showSec(&#39;schedule&#39;,this)"><i class="fas fa-calendar-check" style="color:#90caf9"></i><span data-ar="الجدول الزمني" data-en="Schedule">الجدول الزمني</span></div>
   <div class="nl" onclick="showSec(&#39;boq&#39;,this)"><i class="fas fa-calculator" style="color:#a5d6a7"></i><span data-ar="BOQ / الكميات" data-en="BOQ">BOQ / الكميات</span></div>
   <div class="nl" onclick="showSec(&#39;delays&#39;,this)"><i class="fas fa-clock-rotate-left" style="color:#ef9a9a"></i><span data-ar="سجل التأخيرات" data-en="Delays">سجل التأخيرات</span></div>
-  <div class="nl" onclick="showSec(&#39;ipc&#39;,this)"><i class="fas fa-money-bill-wave" style="color:#ffe082"></i><span>مستخلصات الدفع</span></div>
+  <div class="nl" onclick="showSec(&#39;ipc&#39;,this)"><i class="fas fa-money-bill-wave" style="color:#ffe082"></i><span data-ar="مستخلصات الدفع" data-en="Payment Certificates">مستخلصات الدفع</span></div>
   <div class="sb-sep" id="admin-sep" style="display: block;"><span data-ar="الإدارة" data-en="Administration">الإدارة</span></div>
   <div class="nl" onclick="showSec(&#39;permits&#39;,this)"><i class="fas fa-id-badge" style="color:#b0bec5"></i><span data-ar="التصاريح والأذونات" data-en="Permits &amp; Permissions">التصاريح والأذونات</span></div>
   <div class="nl" onclick="showSec(&#39;doclog&#39;,this)"><i class="fas fa-archive" style="color:#ffab91"></i><span data-ar="سجل المستندات" data-en="Document Log">سجل المستندات</span></div>
@@ -2429,7 +2431,7 @@ var chartsInited = false;
 var LNG = 'ar';
 
 // ===== AUTH =====
-var ADMIN = {username:'admin',password:'admin123',name:'Eng. Mohamed Elsayed',role:'admin',title:'Project Manager'};
+var ADMIN = {username:'CivilMo',password:'CivilMo123',name:'Eng. Mohamed Elsayed',role:'admin',title:'Project Manager'};
 
 function getUsers() {
   try { return JSON.parse(localStorage.getItem('sm_users') || '[]'); }
@@ -2819,30 +2821,35 @@ var PAGE_TITLES = {
   permits:   {ar:'التصاريح والأذونات', en:'Permits & Permissions'},
   doclog:    {ar:'سجل المستندات', en:'Document Log'},
   users:     {ar:'إدارة المستخدمين', en:'User Management'},
+  ipc:       {ar:'مستخلصات الدفع', en:'Payment Certificates'},
+  contract:  {ar:'بيانات العقد', en:'Contract Data'},
+  schedule:  {ar:'الجدول الزمني', en:'Schedule'},
+  boq:       {ar:'BOQ الكميات', en:'BOQ'},
+  delays:    {ar:'سجل التأخيرات', en:'Delays'},
 };
+
+// ── Full UI translation dictionary ──
+// Translation handled by _FULL_TRANS (see end of file)
+;
 
 function applyLang(lang) {
   var isEn = lang === 'en';
-  // Translate all data-ar/data-en spans
+  // 1. data-ar / data-en elements (sidebar, section labels)
   document.querySelectorAll('[data-ar][data-en]').forEach(function(el) {
     el.textContent = isEn ? el.getAttribute('data-en') : el.getAttribute('data-ar');
   });
-  // Translate pg-title (topbar page title)
+  // 2. Page title in topbar
   var pgTitle = document.getElementById('pg-title');
   if (pgTitle) {
     var cur = pgTitle.getAttribute('data-sec') || 'dashboard';
     var t = PAGE_TITLES[cur];
     if (t) pgTitle.textContent = isEn ? t.en : t.ar;
   }
-  // Translate sidebar logo text
-  var logoSub = document.querySelector('.sb-logo small');
-  // Translate topbar role badge
+  // 3. Role badge
   var chipRole = document.getElementById('chip-role');
   if (chipRole) {
     var roleMap = {ar:{admin:'مسؤول',editor:'محرر',viewer:'مشاهد'}, en:{admin:'Admin',editor:'Editor',viewer:'Viewer'}};
-    if (CU && CU.role) {
-      chipRole.textContent = (roleMap[lang]||roleMap.ar)[CU.role] || chipRole.textContent;
-    }
+    if (CU && CU.role) chipRole.textContent = (roleMap[lang]||roleMap.ar)[CU.role] || chipRole.textContent;
   }
 }
 
@@ -3103,7 +3110,7 @@ function importData(input) {
 }
 
 // ===== NAV =====
-var TITLES = {dashboard:'لوحة التحكم',works:'أعمال الموقع',daily:'التقرير اليومي',approvals:'اعتمادات المواد',warehouse:'مستودع المواد',labor:'العمالة والمعدات',permits:'التصاريح والأذونات',doclog:'سجل المستندات',analysis:'التحليل الشامل',users:'إدارة المستخدمين'};
+var TITLES = {dashboard:'لوحة التحكم',works:'أعمال الموقع',daily:'التقرير اليومي',approvals:'اعتمادات المواد',warehouse:'مستودع المواد',labor:'العمالة والمعدات',permits:'التصاريح والأذونات',doclog:'سجل المستندات',analysis:'التحليل الشامل',users:'إدارة المستخدمين',ipc:'مستخلصات الدفع',contract:'بيانات العقد',schedule:'الجدول الزمني',boq:'BOQ الكميات',delays:'سجل التأخيرات'};
 
 function showSec(name, el) {
   if (window.innerWidth <= 768) closeSidebar();
@@ -3114,6 +3121,7 @@ function showSec(name, el) {
     pgTitle.setAttribute('data-sec', name);
     var t = PAGE_TITLES[name];
     if (t) pgTitle.textContent = LNG === 'en' ? t.en : t.ar;
+    else pgTitle.textContent = TITLES[name] || name;
   }
   var secs = document.querySelectorAll('.sec');
   for (var i = 0; i < secs.length; i++) secs[i].classList.remove('active');
@@ -3122,7 +3130,6 @@ function showSec(name, el) {
   var sec = document.getElementById('sec-' + name);
   if (sec) sec.classList.add('active');
   if (el) el.classList.add('active');
-  document.getElementById('pg-title').textContent = TITLES[name] || '';
   if (!chartsInited) { initCharts(); }
   if (name === 'dashboard') updateDashboard();
   if (name === 'analysis') buildAnalysis();
@@ -7947,14 +7954,8 @@ loadDB = function() {
 };
 
 // ══════════════════════════════════════════
-//  EXTEND TITLES MAP
+//  EXTEND TITLES MAP (handled in main TITLES var)
 // ══════════════════════════════════════════
-if (typeof TITLES !== 'undefined') {
-  TITLES.contract = 'بيانات العقد';
-  TITLES.schedule = 'الجدول الزمني';
-  TITLES.boq      = 'BOQ الكميات';
-  TITLES.delays   = 'سجل التأخيرات';
-}
 
 // ══════════════════════════════════════════
 //  MILESTONE MODAL OPEN HOOK
@@ -8911,175 +8912,4 @@ function _buildDocLog(wb){
   return hasAny?undefined:false;
 }
 function exportSecDocLog(){_xjWb('سجل_المستندات',_buildDocLog);}
-
-function _buildIPC(wb){if(!DB.ipcs||!DB.ipcs.length)return;var H=['رقم المستخلص','الفترة من','الفترة إلى','رقم العقد','الأعمال التراكمية','قيمة المستخلص','نسبة الإنجاز%','استرداد دفعة مقدمة','استقطاع 10%','صافي المستخلص (شامل الضريبة)','الحالة'];var R=DB.ipcs.map(function(d){return[d.ipcNo||'',d.periodFrom||'',d.periodTo||'',d.contractNo||'',+d.totalValueToDate||0,+d.thisIPCExclVAT||0,d.progressTotal?parseFloat((d.progressTotal*100).toFixed(2)):0,+d.thisIPCAdvRecov||0,+d.thisIPCDeduct10||0,+d.netAmountInclVAT||0,d.status||''];});_xjSheet(wb,'مستخلصات الدفع','مستخلصات الدفع (IPCs)',H,R,[12,12,12,18,22,22,13,20,22,24,12]);}
-function exportSecIPC(){_xjWb('مستخلصات_الدفع',_buildIPC);}
-
-function doExportFull(){
-  if(typeof ExcelJS==='undefined'){alert('جاري تحميل المكتبة، انتظر ثم حاول');return;}
-  var wb=new ExcelJS.Workbook();wb.creator='Managing & Mentoring Project System';wb.created=new Date();wb.modified=new Date();
-  _buildWorks(wb);_buildApprovals(wb);_buildWarehouse(wb);_buildLabor(wb);_buildPermits(wb);_buildDocLog(wb);_buildIPC(wb);
-  if(!wb.worksheets.length){alert('لا توجد بيانات مدخلة');return;}
-  _xjSave(wb,'تقرير_شامل');
-}
-
-function showSyncPanel(){var p=document.getElementById('sync-panel');if(p)p.style.display=p.style.display==='none'?'block':'none';}
-
-function togglePassVis(inputId,iconId){var inp=document.getElementById(inputId);var ico=document.getElementById(iconId);if(!inp)return;var show=inp.type==='password';inp.type=show?'text':'password';if(ico){ico.className=show?'fas fa-eye-slash':'fas fa-eye';}}
-// ── importOfficialDCLog ──
-function importOfficialDCLog(input) {
-  if (!input || !input.files || !input.files.length) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    try {
-      var wb = XLSX.read(ev.target.result, {type:'array', cellDates:true});
-      var added=0, updated=0;
-      function fd(v){if(!v)return'';if(v instanceof Date)return v.getFullYear()+'-'+String(v.getMonth()+1).padStart(2,'0')+'-'+String(v.getDate()).padStart(2,'0');var s=String(v).trim();var m=s.match(/(\d{4}-\d{2}-\d{2})/);return m?m[1]:s;}
-      function cv(ws,r,c){var cell=ws[XLSX.utils.encode_cell({r:r-1,c:c-1})];if(!cell)return'';if(cell.t==='d'&&cell.v)return fd(cell.v);return String(cell.v||'').trim();}
-      var sheets=[['PRQ','prq',9,10],['MST','mst',9,10],['MIR','mir',8,9]];
-      if(!DB.docLog)DB.docLog={};
-      sheets.forEach(function(cfg){
-        var shName=cfg[0],tabKey=cfg[1],dataStart=cfg[3];
-        if(!wb.Sheets[shName])return;
-        var ws=wb.Sheets[shName];
-        if(!DB.docLog[tabKey])DB.docLog[tabKey]=[];
-        var arr=DB.docLog[tabKey];
-        var range=XLSX.utils.decode_range(ws['!ref']||'A1:R500');
-        for(var r=dataStart;r<=range.e.r+1;r++){
-          var sno=cv(ws,r,1);if(!sno||isNaN(parseInt(sno)))continue;
-          var docNo=cv(ws,r,5);if(!docNo)continue;
-          var entry={docNo:docNo,desc:cv(ws,r,2),disc:cv(ws,r,3),dtype:cv(ws,r,4),unifier:cv(ws,r,6),status:cv(ws,r,7),finalStatus:cv(ws,r,7),submitDate1:fd(cv(ws,r,8)),stat0:cv(ws,r,9),status1:cv(ws,r,9),recv0:fd(cv(ws,r,10)),sub1:fd(cv(ws,r,11)),submitDate2:fd(cv(ws,r,11)),stat1:cv(ws,r,12),statusRev1:cv(ws,r,12),recv1:fd(cv(ws,r,13)),rev2No:cv(ws,r,14),sub2:fd(cv(ws,r,15)),stat2:cv(ws,r,16),recv2:fd(cv(ws,r,17)),notes:cv(ws,r,18),driveLink:''};
-          var dup=arr.findIndex(function(x){return x.docNo===docNo;});
-          if(dup>=0){entry.driveLink=arr[dup].driveLink||'';entry.notes=entry.notes||arr[dup].notes||'';arr[dup]=entry;updated++;}
-          else{arr.push(entry);added++;}
-        }
-      });
-      saveDB();renderDocLog();renderDocLogKPI();
-      try{renderApprovals();updateApStats();}catch(e){}
-      alert('✅ تم استيراد DC Log\nأُضيف: '+added+' | تحديث: '+updated+'\n(PRQ + MST + MIR)');
-    } catch(e){console.error(e);alert('خطأ: '+e.message);}
-  };
-  reader.readAsArrayBuffer(input.files[0]);
-  try{input.value='';}catch(e){}
-}
-
-function importApprovalsAuto(input) {
-  if (!input.files.length) return;
-  if (typeof XLSX === 'undefined') { alert('انتظر ثم حاول'); return; }
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    var wb = XLSX.read(ev.target.result, {type:'array', cellDates:true});
-    var sheets = wb.SheetNames;
-    var isDCLog = sheets.indexOf('PRQ')>=0||sheets.indexOf('MST')>=0||sheets.indexOf('MIR')>=0;
-    if (isDCLog) {
-      if (confirm('تم التعرف على ملف DC Log الرسمي\nهل تريد الاستيراد في سجل المستندات؟')) {
-        importOfficialDCLog({files:input.files});
-      }
-    } else {
-      importXL(input,'approvals');
-    }
-    try{input.value='';}catch(e){}
-  };
-  reader.readAsArrayBuffer(input.files[0]);
-}
-
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
-<script>
-
-function replaceAppLogo(input) {
-  if (!input.files || !input.files[0]) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var lbl = document.querySelector('label[for="logo-file-inp"]');
-    if (lbl) {
-      lbl.innerHTML = '<img src="' + e.target.result + '" style="width:48px;height:48px;border-radius:50%;object-fit:cover;display:block">';
-    }
-    localStorage.setItem('app_logo_b64', e.target.result);
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-window.addEventListener('load', function() {
-  var saved = localStorage.getItem('app_logo_b64');
-  if (!saved) return;
-  var lbl = document.querySelector('label[for="logo-file-inp"]');
-  if (lbl) {
-    lbl.innerHTML = '<img src="' + saved + '" style="width:48px;height:48px;border-radius:50%;object-fit:cover;display:block">';
-  }
-});
-
-
-
-
-
-
-
-
-</script>
-
-
-
-<!-- ACTIVITY MODAL -->
-<div id="m-activity" class="modal-bg">
-  <div class="modal-box" style="max-width:680px">
-    <div class="modal-head" style="background:#1a3a5c;color:#fff;padding:14px 18px;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between">
-      <h4 style="margin:0;font-size:14px"><i class="fas fa-calendar-check" style="color:#f0a500;margin-left:8px"></i> تعديل / إضافة نشاط</h4>
-      <button class="mclose" onclick="closeM('m-activity')">&#x2715;</button>
-    </div>
-    <input type="hidden" id="act-idx" value="-1">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">
-      <div class="form-group"><label>Activity ID *</label><input type="text" id="act-id" placeholder="A001" style="direction:ltr"></div>
-      <div class="form-group"><label>WBS</label><input type="text" id="act-wbs" placeholder="1.2.3" style="direction:ltr"></div>
-      <div class="form-group" style="grid-column:1/-1"><label>اسم النشاط *</label><input type="text" id="act-name" placeholder="وصف النشاط"></div>
-      <div class="form-group"><label>النوع</label><select id="act-type"><option value="task">نشاط عادي</option><option value="summary">ملخص</option><option value="milestone">ميلستون</option></select></div>
-      <div class="form-group"><label>التخصص</label><select id="act-discipline"><option value="مدني">مدني</option><option value="ميكانيكا">ميكانيكا</option><option value="كهرباء">كهرباء</option><option value="ICA">ICA</option><option value="مساحة">مساحة</option></select></div>
-      <div class="form-group"><label>المدة الأصلية (يوم)</label><input type="number" id="act-orig-dur" min="0" placeholder="0"></div>
-      <div class="form-group"><label>المدة المتبقية (يوم)</label><input type="number" id="act-rem-dur" min="0" placeholder="0"></div>
-      <div class="form-group"><label>البداية المبكرة (ES)</label><input type="date" id="act-es"></div>
-      <div class="form-group"><label>النهاية المبكرة (EF)</label><input type="date" id="act-ef"></div>
-      <div class="form-group"><label>بدء فعلي</label><input type="date" id="act-actual-start"></div>
-      <div class="form-group"><label>انتهاء فعلي</label><input type="date" id="act-actual-end"></div>
-      <div class="form-group"><label>% الإنجاز</label><input type="number" id="act-pct" min="0" max="100" placeholder="0"></div>
-      <div class="form-group"><label>الفراغ الزمني (يوم)</label><input type="number" id="act-float" placeholder="0"></div>
-      <div class="form-group"><label>الأسلاف</label><input type="text" id="act-preds" placeholder="A001FS,A002SS+2" style="direction:ltr"></div>
-      <div class="form-group"><label>رمز BOQ</label><input type="text" id="act-boq-code" style="direction:ltr"></div>
-      <div class="form-group" style="grid-column:1/-1"><label>ملاحظات</label><textarea id="act-notes" rows="2" style="width:100%;resize:vertical"></textarea></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;padding:0 16px 16px">
-      <button class="pbtn" style="background:#e0e0e0;color:#333" onclick="closeM('m-activity')">إلغاء</button>
-      <button class="pbtn pbtn-blue" onclick="saveActivity()"><i class="fas fa-save"></i> حفظ</button>
-    </div>
-  </div>
-</div>
-
-<!-- BOQ ACTIVITY LINK MODAL -->
-<div id="m-boq-link" class="modal-bg">
-  <div class="modal-box" style="max-width:560px">
-    <div class="modal-head" style="background:#1a3a5c;color:#fff;padding:14px 18px;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between">
-      <h4 style="margin:0;font-size:14px"><i class="fas fa-link" style="color:#f0a500;margin-left:8px"></i> ربط بند BOQ بنشاط جدول زمني</h4>
-      <button class="mclose" onclick="closeM('m-boq-link')">&#x2715;</button>
-    </div>
-    <div style="padding:16px">
-      <input type="hidden" id="boq-link-idx" value="-1">
-      <div style="background:#f0f4fa;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#1a3a5c;font-weight:600" id="boq-link-desc"></div>
-      <div class="form-group">
-        <label>بحث في الأنشطة</label>
-        <input type="text" id="boq-link-search" placeholder="ابحث بـ ID أو اسم النشاط..." oninput="filterBOQLinkOpts()" style="width:100%;direction:ltr">
-      </div>
-      <div class="form-group">
-        <label>اختر النشاط</label>
-        <select id="boq-link-act-sel" size="8" style="width:100%;font-size:12px;direction:ltr;font-family:monospace">
-          <option value="">— بدون ربط —</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-        <button class="pbtn" style="background:#e0e0e0;color:#333" onclick="closeM('m-boq-link')">إلغاء</button>
-        <button class="pbtn pbtn-blue" onclick="saveBOQLink()"><i class="fas fa-save"></i> حفظ الربط</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-</body></html>
